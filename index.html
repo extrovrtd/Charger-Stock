@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charger Stock</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Charger Stock">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#D98C2B">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACmklEQVR4nO3cQU7bUBRAUVOxlk5gd90G7I4JrKaDoAg1uRGFYPtF5wwzsJ++b2zLiXz3+vSwwDm/th6A/RIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIH6X7rAXbk95+XNXf39vy45u6+wJnj3cplbLLH/yWOZdnuOO28D3FsfIT23Ic4SOIgiYMkDpLnHOnqzyH2fO95ljMHSRwkcZDEQRIHSRwkcZDEQbqFh2A/9HDp+5vd/995Lpsdx86fOR7Gm5vI4MvKzss4mjLnqalxzFrxWdMejYxj4lpPnHnePcfEVT6adf8x8szBOobFMfq0sUybf1gcrEkcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEEaFses1yadmjX/sDhY07w4Zn35Pho3+bw4loGrvMyceWQcy7S1njXt0dQ4ljkrPmXOU/NeUvvRYd13+/7GuVkczI7joI7BP9G8PT+efvKZ7V9rO+MMvqzw08RBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBuuU4Lv+S/vnf2a+1nXFuOQ6+6Rb+7HPB2b+KfeG7fq3tzHL3+vSw9QzslMsKSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRykv49HW73JX8dLAAAAAElFTkSuQmCC">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACmklEQVR4nO3cQU7bUBRAUVOxlk5gd90G7I4JrKaDoAg1uRGFYPtF5wwzsJ++b2zLiXz3+vSwwDm/th6A/RIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIH6X7rAXbk95+XNXf39vy45u6+wJnj3cplbLLH/yWOZdnuOO28D3FsfIT23Ic4SOIgiYMkDpLnHOnqzyH2fO95ljMHSRwkcZDEQRIHSRwkcZDEQbqFh2A/9HDp+5vd/995Lpsdx86fOR7Gm5vI4MvKzss4mjLnqalxzFrxWdMejYxj4lpPnHnePcfEVT6adf8x8szBOobFMfq0sUybf1gcrEkcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEEaFses1yadmjX/sDhY07w4Zn35Pho3+bw4loGrvMyceWQcy7S1njXt0dQ4ljkrPmXOU/NeUvvRYd13+/7GuVkczI7joI7BP9G8PT+efvKZ7V9rO+MMvqzw08RBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBuuU4Lv+S/vnf2a+1nXFuOQ6+6Rb+7HPB2b+KfeG7fq3tzHL3+vSw9QzslMsKSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRykv49HW73JX8dLAAAAAElFTkSuQmCC">
+<style>
+  :root{
+    --bg: #F0F2F0;
+    --panel: #FFFFFF;
+    --panel-edge: #DDE2DD;
+    --ink: #202A24;
+    --ink-soft: #5B6760;
+    --amber: #D98C2B;
+    --amber-deep: #B06F1C;
+    --teal: #2E8B84;
+    --teal-deep: #226B65;
+    --danger: #C1503F;
+    --danger-bg: #FBE9E5;
+    --radius: 10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height:1.45;
+  }
+  h1,h2,h3, .num, .stat-value{
+    font-family:'Trebuchet MS', 'Segoe UI', ui-rounded, system-ui, sans-serif;
+  }
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
+  header.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:16px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:18px;
+  }
+  header.top h1{
+    font-size:30px;
+    font-weight:700;
+    margin:0 0 4px;
+    letter-spacing:-0.01em;
+  }
+  header.top p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:14.5px;
+  }
+  .sync-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+    font-size:13px;
+  }
+  .sync-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--ink-soft);
+  }
+  .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#B8BEB8;
+    flex-shrink:0;
+  }
+  .dot.on{background:var(--teal);}
+  .dot.pending{background:var(--amber);}
+  .link-btn{
+    background:none;border:none;color:var(--teal-deep);
+    font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;
+    padding:0;
+  }
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(120px,1fr));
+    gap:10px;
+    margin-bottom:28px;
+  }
+  .stat{
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    border-radius:var(--radius);
+    padding:14px 16px;
+  }
+  .stat-label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .stat-value{
+    font-size:22px;
+    font-weight:700;
+  }
+  .stat.warn .stat-value{ color:var(--danger); }
+  .layout{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:20px;
+  }
+  .panel h2{
+    font-size:17px;
+    font-weight:600;
+    margin:0 0 14px;
+  }
+  .panel p.hint{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:-6px 0 14px;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  th{
+    text-align:left;
+    font-weight:600;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    padding:0 8px 8px;
+    border-bottom:1px solid var(--panel-edge);
+  }
+  td{
+    padding:10px 8px;
+    border-bottom:1px solid #EFF2EF;
+    vertical-align:middle;
+  }
+  tr:last-child td{border-bottom:none;}
+  .item-name{font-weight:600;}
+  .item-type{color:var(--ink-soft); font-size:12.5px;}
+  .qty-cell{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qty-btn{
+    width:26px;height:26px;
+    border-radius:6px;
+    border:1px solid var(--panel-edge);
+    background:#F7F8F7;
+    cursor:pointer;
+    font-size:16px;
+    line-height:1;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);
+  }
+  .qty-btn:hover{background:#ECEEEC;}
+  .qty-num{
+    min-width:26px;
+    text-align:center;
+    font-weight:700;
+  }
+  .badge{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:20px;
+    font-size:11.5px;
+    font-weight:600;
+  }
+  .badge.low{background:var(--danger-bg); color:var(--danger);}
+  .badge.ok{background:#E7F1E9; color:var(--teal-deep);}
+  .icon-btn{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    cursor:pointer;
+    font-size:13px;
+    padding:4px 6px;
+    border-radius:6px;
+  }
+  .icon-btn:hover{background:#F0F0EE; color:var(--danger);}
+  .add-form, .sale-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px dashed var(--panel-edge);
+  }
+  .add-form-row{
+    display:grid;
+    grid-template-columns:2fr 1.2fr 1fr 1fr 1fr;
+    gap:8px;
+  }
+  .setup-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  input, select{
+    font-family:inherit;
+    font-size:13.5px;
+    padding:8px 10px;
+    border-radius:7px;
+    border:1px solid var(--panel-edge);
+    background:#FBFCFB;
+    color:var(--ink);
+    width:100%;
+  }
+  input:focus, select:focus{
+    outline:2px solid var(--teal);
+    outline-offset:1px;
+  }
+  button.primary{
+    font-family:inherit;
+    font-weight:700;
+    font-size:13.5px;
+    background:var(--amber);
+    color:#fff;
+    border:none;
+    border-radius:7px;
+    padding:9px 14px;
+    cursor:pointer;
+  }
+  button.primary:hover{background:var(--amber-deep);}
+  button.primary.teal{background:var(--teal);}
+  button.primary.teal:hover{background:var(--teal-deep);}
+  button.primary:disabled{background:#C7CBC7; cursor:not-allowed;}
+  .sale-log{
+    margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    max-height:280px;
+    overflow-y:auto;
+  }
+  .sale-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:13.5px;
+    padding:8px 0;
+    border-bottom:1px solid #EFF2EF;
+  }
+  .sale-row:last-child{border-bottom:none;}
+  .sale-meta{color:var(--ink-soft); font-size:12px;}
+  .empty{
+    color:var(--ink-soft);
+    font-size:14px;
+    padding:16px 0;
+    text-align:center;
+  }
+  .clear-link{
+    color:var(--ink-soft);
+    font-size:12px;
+    text-decoration:underline;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0;
+  }
+  .steps{
+    font-size:13.5px;
+    padding-left:20px;
+    margin:0 0 16px;
+  }
+  .steps li{margin-bottom:6px;}
+  .steps a{color:var(--teal-deep);}
+  .warn-box{
+    background:#FBF3E4;
+    border:1px solid #EAD9AF;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:12.5px;
+    color:#7A5C1E;
+    margin-bottom:14px;
+  }
+  .rules-box{
+    background:#F5F6F5;
+    border:1px solid var(--panel-edge);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:12px;
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space:pre-wrap;
+    margin-bottom:14px;
+    overflow-x:auto;
+  }
+  @media (max-width:760px){
+    .layout{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .add-form-row{grid-template-columns:1fr 1fr;}
+    .setup-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Charger Stock</h1>
+      <p>Inventory and sales for phone chargers &amp; accessories</p>
+    </div>
+    <button class="clear-link" id="resetBtn">Clear all data</button>
+  </header>
+
+  <div class="sync-bar">
+    <div class="sync-status">
+      <span class="dot" id="syncDot"></span>
+      <span id="syncText">Not connected — saving on this phone only</span>
+    </div>
+    <button class="link-btn" id="syncToggleBtn">Set up sync across phones</button>
+  </div>
+
+  <div class="panel" id="setupPanel" style="display:none;">
+    <h2>Connect this phone to your shared inventory</h2>
+    <p class="hint">This uses a free Google Firebase project as the shared database. Do this once to create it, then enter the same values on every phone.</p>
+    <ol class="steps">
+      <li>Go to <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> and sign in with a Google account.</li>
+      <li>Click <strong>Add project</strong>, give it any name (e.g. "charger-stock"), and finish creating it.</li>
+      <li>In the project, click the <strong>&lt;/&gt;</strong> (web) icon to register a web app. Skip hosting.</li>
+      <li>Firebase shows a code block called <code>firebaseConfig</code> — copy each value into the matching field below.</li>
+      <li>In the left menu, go to <strong>Build → Firestore Database → Create database</strong>, and start in test mode (choose the region closest to you).</li>
+      <li>Open the <strong>Rules</strong> tab of Firestore and replace the contents with the rules shown below, then click Publish (test mode rules expire after 30 days otherwise).</li>
+    </ol>
+    <div class="warn-box">These values let any device read and write this one inventory document — nobody else will have them unless you share them, but don't post them anywhere public (like a public GitHub repo).</div>
+    <div class="rules-box">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /chargerTrackerApp/{doc} {
+      allow read, write: if true;
+    }
+  }
+}</div>
+    <div class="setup-grid">
+      <input type="text" id="cfgApiKey" placeholder="apiKey">
+      <input type="text" id="cfgAuthDomain" placeholder="authDomain">
+      <input type="text" id="cfgProjectId" placeholder="projectId">
+      <input type="text" id="cfgStorageBucket" placeholder="storageBucket (optional)">
+      <input type="text" id="cfgSenderId" placeholder="messagingSenderId (optional)">
+      <input type="text" id="cfgAppId" placeholder="appId">
+    </div>
+    <div style="margin-top:14px; display:flex; gap:10px;">
+      <button class="primary teal" id="connectBtn">Connect</button>
+      <button class="link-btn" id="disconnectBtn" style="display:none;">Disconnect and go back to local-only</button>
+    </div>
+    <div id="setupError" style="color:var(--danger); font-size:13px; margin-top:10px;"></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Items in stock</div>
+      <div class="stat-value" id="statUnits">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Stock value</div>
+      <div class="stat-value" id="statValue">₵0</div>
+    </div>
+    <div class="stat warn">
+      <div class="stat-label">Low stock</div>
+      <div class="stat-value" id="statLow">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Revenue (all time)</div>
+      <div class="stat-value" id="statRevenue">₵0</div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <div class="panel">
+      <h2>Inventory</h2>
+      <table id="invTable">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="invBody"></tbody>
+      </table>
+      <div id="invEmpty" class="empty" style="display:none;">No chargers yet. Add your first item below.</div>
+
+      <form class="add-form" id="addForm">
+        <div class="add-form-row">
+          <input type="text" id="newName" placeholder="Item name (e.g. Type-C 20W)" required>
+          <select id="newType">
+            <option value="Cord and head">Cord and head</option>
+            <option value="Cord only">Cord only</option>
+            <option value="Head only">Head only</option>
+          </select>
+          <input type="number" id="newQty" placeholder="Qty" min="0" required>
+          <input type="number" id="newPrice" placeholder="Sell price" min="0" step="0.01" required>
+          <input type="number" id="newLow" placeholder="Low at" min="0" value="3">
+        </div>
+        <div>
+          <button type="submit" class="primary">Add item</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>Record a sale</h2>
+      <form class="sale-form" id="saleForm">
+        <select id="saleItem" required></select>
+        <input type="number" id="saleQty" placeholder="Quantity sold" min="1" value="1" required>
+        <button type="submit" class="primary teal">Record sale</button>
+      </form>
+
+      <h2 style="margin-top:22px;">Recent sales</h2>
+      <div class="sale-log" id="saleLog"></div>
+      <div id="saleEmpty" class="empty" style="display:none;">No sales recorded yet.</div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {
+  getFirestore, doc, setDoc, onSnapshot,
+  enableIndexedDbPersistence
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const LOCAL_KEY = 'charger-tracker-data';
+const CONFIG_KEY = 'charger-tracker-firebase-config';
+const DOC_PATH = ['chargerTrackerApp', 'sharedStore'];
+
+let state = { inventory: [], sales: [] };
+let mode = 'local'; // 'local' | 'cloud'
+let db = null;
+let docRef = null;
+let suppressNextWrite = false;
+
+const currency = n => '₵' + Number(n).toLocaleString('en-GH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ---------- Rendering ----------
+
+function render(){
+  renderStats();
+  renderInventory();
+  renderSaleItemOptions();
+  renderSaleLog();
+}
+
+function renderStats(){
+  const totalUnits = state.inventory.reduce((s,i)=>s+Number(i.qty),0);
+  const totalValue = state.inventory.reduce((s,i)=>s+Number(i.qty)*Number(i.price),0);
+  const lowCount = state.inventory.filter(i=>Number(i.qty) <= Number(i.lowAt)).length;
+  const revenue = state.sales.reduce((s,sale)=>s+Number(sale.total),0);
+
+  document.getElementById('statUnits').textContent = totalUnits;
+  document.getElementById('statValue').textContent = currency(totalValue);
+  document.getElementById('statLow').textContent = lowCount;
+  document.getElementById('statRevenue').textContent = currency(revenue);
+}
+
+function renderInventory(){
+  const body = document.getElementById('invBody');
+  const empty = document.getElementById('invEmpty');
+  body.innerHTML = '';
+
+  if(state.inventory.length === 0){
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  state.inventory.forEach(item=>{
+    const isLow = Number(item.qty) <= Number(item.lowAt);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="item-name">${escapeHtml(item.name)}</div>
+        <div class="item-type">${escapeHtml(item.type || '—')}</div>
+      </td>
+      <td>${currency(item.price)}</td>
+      <td>
+        <div class="qty-cell">
+          <button class="qty-btn" data-action="dec" data-id="${item.id}">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" data-action="inc" data-id="${item.id}">+</button>
+        </div>
+      </td>
+      <td><span class="badge ${isLow ? 'low':'ok'}">${isLow ? 'Low stock' : 'In stock'}</span></td>
+      <td><button class="icon-btn" data-action="remove" data-id="${item.id}">Remove</button></td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+function renderSaleItemOptions(){
+  const select = document.getElementById('saleItem');
+  const prevValue = select.value;
+  select.innerHTML = '';
+  if(state.inventory.length === 0){
+    const opt = document.createElement('option');
+    opt.textContent = 'Add an item first';
+    opt.disabled = true;
+    opt.selected = true;
+    select.appendChild(opt);
+    select.disabled = true;
+    return;
+  }
+  select.disabled = false;
+  state.inventory.forEach(item=>{
+    const opt = document.createElement('option');
+    opt.value = item.id;
+    opt.textContent = `${item.name} (${item.qty} left)`;
+    select.appendChild(opt);
+  });
+  if(prevValue) select.value = prevValue;
+}
+
+function renderSaleLog(){
+  const log = document.getElementById('saleLog');
+  const empty = document.getElementById('saleEmpty');
+  log.innerHTML = '';
+  if(state.sales.length === 0){
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  [...state.sales].reverse().slice(0,30).forEach(sale=>{
+    const row = document.createElement('div');
+    row.className = 'sale-row';
+    const date = new Date(sale.date);
+    row.innerHTML = `
+      <div>
+        <div>${escapeHtml(sale.itemName)} × ${sale.qty}</div>
+        <div class="sale-meta">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+      </div>
+      <div>${currency(sale.total)}</div>
+    `;
+    log.appendChild(row);
+  });
+}
+
+// ---------- Sync status UI ----------
+
+function setSyncStatus(kind, text){
+  const dot = document.getElementById('syncDot');
+  dot.className = 'dot' + (kind ? ' ' + kind : '');
+  document.getElementById('syncText').textContent = text;
+}
+
+function updateSyncBarForMode(){
+  const toggleBtn = document.getElementById('syncToggleBtn');
+  const disconnectBtn = document.getElementById('disconnectBtn');
+  if(mode === 'cloud'){
+    toggleBtn.textContent = 'Sync settings';
+    disconnectBtn.style.display = 'inline-block';
+    if(navigator.onLine){
+      setSyncStatus('on', 'Synced across your phones');
+    }else{
+      setSyncStatus('pending', 'Offline — changes will sync when back online');
+    }
+  }else{
+    toggleBtn.textContent = 'Set up sync across phones';
+    disconnectBtn.style.display = 'none';
+    setSyncStatus('', 'Not connected — saving on this phone only');
+  }
+}
+
+window.addEventListener('online', updateSyncBarForMode);
+window.addEventListener('offline', updateSyncBarForMode);
+
+// ---------- Local mode ----------
+
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if(raw){
+      state = JSON.parse(raw);
+      state.inventory = state.inventory || [];
+      state.sales = state.sales || [];
+    }
+  }catch(e){
+    console.log('No existing local data found, starting fresh.');
+  }
+}
+
+function saveLocal(){
+  try{
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+  }catch(e){
+    console.error('Local storage error:', e);
+    alert('Could not save — your browser storage may be full or disabled.');
+  }
+}
+
+// ---------- Cloud mode ----------
+
+async function connectCloud(config){
+  const app = initializeApp(config);
+  db = getFirestore(app);
+  try{
+    await enableIndexedDbPersistence(db);
+  }catch(e){
+    console.log('Offline persistence unavailable in this tab:', e.code);
+  }
+  docRef = doc(db, DOC_PATH[0], DOC_PATH[1]);
+
+  onSnapshot(docRef, (snap)=>{
+    if(snap.exists()){
+      const data = snap.data();
+      state = {
+        inventory: data.inventory || [],
+        sales: data.sales || []
+      };
+      render();
+    }else{
+      // First device to connect — seed the shared document with whatever is local.
+      pushState();
+    }
+    updateSyncBarForMode();
+  }, (err)=>{
+    console.error('Sync error:', err);
+    setSyncStatus('pending', 'Sync error — check your setup and connection');
+  });
+}
+
+function pushState(){
+  if(mode === 'cloud' && docRef){
+    setDoc(docRef, state).catch(err=>{
+      console.error('Write error:', err);
+    });
+  }else{
+    saveLocal();
+  }
+}
+
+// ---------- Setup panel wiring ----------
+
+const setupPanel = document.getElementById('setupPanel');
+
+document.getElementById('syncToggleBtn').addEventListener('click', ()=>{
+  setupPanel.style.display = setupPanel.style.display === 'none' ? 'block' : 'none';
+});
+
+document.getElementById('connectBtn').addEventListener('click', async ()=>{
+  const config = {
+    apiKey: document.getElementById('cfgApiKey').value.trim(),
+    authDomain: document.getElementById('cfgAuthDomain').value.trim(),
+    projectId: document.getElementById('cfgProjectId').value.trim(),
+    storageBucket: document.getElementById('cfgStorageBucket').value.trim(),
+    messagingSenderId: document.getElementById('cfgSenderId').value.trim(),
+    appId: document.getElementById('cfgAppId').value.trim()
+  };
+  const errBox = document.getElementById('setupError');
+  errBox.textContent = '';
+
+  if(!config.apiKey || !config.authDomain || !config.projectId || !config.appId){
+    errBox.textContent = 'Please fill in at least apiKey, authDomain, projectId, and appId.';
+    return;
+  }
+
+  try{
+    localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+    await connectCloud(config);
+    mode = 'cloud';
+    updateSyncBarForMode();
+    setupPanel.style.display = 'none';
+  }catch(e){
+    console.error(e);
+    errBox.textContent = 'Could not connect — double check the values and your internet connection.';
+  }
+});
+
+document.getElementById('disconnectBtn').addEventListener('click', ()=>{
+  if(!confirm('Stop syncing and go back to saving on this phone only? Your data stays as-is.')) return;
+  localStorage.removeItem(CONFIG_KEY);
+  mode = 'local';
+  db = null;
+  docRef = null;
+  updateSyncBarForMode();
+});
+
+function prefillSetupForm(config){
+  document.getElementById('cfgApiKey').value = config.apiKey || '';
+  document.getElementById('cfgAuthDomain').value = config.authDomain || '';
+  document.getElementById('cfgProjectId').value = config.projectId || '';
+  document.getElementById('cfgStorageBucket').value = config.storageBucket || '';
+  document.getElementById('cfgSenderId').value = config.messagingSenderId || '';
+  document.getElementById('cfgAppId').value = config.appId || '';
+}
+
+// ---------- Item / sale actions ----------
+
+document.getElementById('addForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const name = document.getElementById('newName').value.trim();
+  const type = document.getElementById('newType').value.trim();
+  const qty = document.getElementById('newQty').value;
+  const price = document.getElementById('newPrice').value;
+  const lowAt = document.getElementById('newLow').value || 3;
+
+  if(!name || qty === '' || price === '') return;
+
+  state.inventory.push({
+    id: uid(),
+    name, type,
+    qty: Number(qty),
+    price: Number(price),
+    lowAt: Number(lowAt)
+  });
+
+  pushState();
+  render();
+  e.target.reset();
+  document.getElementById('newLow').value = 3;
+});
+
+document.getElementById('invBody').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  const id = btn.dataset.id;
+  const action = btn.dataset.action;
+  const item = state.inventory.find(i=>i.id === id);
+  if(!item) return;
+
+  if(action === 'inc'){
+    item.qty = Number(item.qty) + 1;
+  } else if(action === 'dec'){
+    item.qty = Math.max(0, Number(item.qty) - 1);
+  } else if(action === 'remove'){
+    if(!confirm(`Remove "${item.name}" from inventory?`)) return;
+    state.inventory = state.inventory.filter(i=>i.id !== id);
+  }
+  pushState();
+  render();
+});
+
+document.getElementById('saleForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const itemId = document.getElementById('saleItem').value;
+  const qty = Number(document.getElementById('saleQty').value);
+  const item = state.inventory.find(i=>i.id === itemId);
+  if(!item || !qty || qty < 1) return;
+
+  if(qty > item.qty){
+    alert(`Only ${item.qty} left in stock. Can't sell ${qty}.`);
+    return;
+  }
+
+  item.qty -= qty;
+  state.sales.push({
+    id: uid(),
+    itemId,
+    itemName: item.name,
+    qty,
+    total: qty * item.price,
+    date: new Date().toISOString()
+  });
+
+  pushState();
+  render();
+  document.getElementById('saleQty').value = 1;
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('This clears all inventory and sales data. Continue?')) return;
+  state = { inventory: [], sales: [] };
+  pushState();
+  render();
+});
+
+// ---------- Boot ----------
+
+(async function boot(){
+  const savedConfigRaw = localStorage.getItem(CONFIG_KEY);
+  if(savedConfigRaw){
+    try{
+      const config = JSON.parse(savedConfigRaw);
+      prefillSetupForm(config);
+      mode = 'cloud';
+      await connectCloud(config);
+    }catch(e){
+      console.error('Could not reconnect to cloud sync:', e);
+      mode = 'local';
+      loadLocal();
+    }
+  }else{
+    loadLocal();
+  }
+  render();
+  updateSyncBarForMode();
+})();
+</script>
+</body>
+</html>
