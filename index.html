@@ -490,6 +490,8 @@ function renderStats(){
   document.getElementById('statProfit').textContent = currency(profit);
 }
 
+let editingId = null;
+
 function renderInventory(){
   const body = document.getElementById('invBody');
   const empty = document.getElementById('invEmpty');
@@ -504,25 +506,53 @@ function renderInventory(){
   state.inventory.forEach(item=>{
     const isLow = Number(item.qty) <= Number(item.lowAt);
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>
-        <div class="item-name">${escapeHtml(item.name)}</div>
-        <div class="item-type">${escapeHtml(item.type || '—')}</div>
-      </td>
-      <td>
-        <div class="item-name">${currency(item.price)}</div>
-        <div class="item-type">${item.cost ? 'cost ' + currency(item.cost) + ' · +' + currency(item.price - item.cost) : 'no cost set'}</div>
-      </td>
-      <td>
-        <div class="qty-cell">
-          <button class="qty-btn" data-action="dec" data-id="${item.id}">−</button>
-          <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" data-action="inc" data-id="${item.id}">+</button>
-        </div>
-      </td>
-      <td><span class="badge ${isLow ? 'low':'ok'}">${isLow ? 'Low stock' : 'In stock'}</span></td>
-      <td><button class="icon-btn" data-action="remove" data-id="${item.id}">Remove</button></td>
-    `;
+
+    if(item.id === editingId){
+      tr.innerHTML = `
+        <td colspan="2">
+          <input type="text" data-field="name" value="${escapeHtml(item.name)}" style="margin-bottom:6px;">
+          <select data-field="type">
+            <option value="Cord and head" ${item.type === 'Cord and head' ? 'selected' : ''}>Cord and head</option>
+            <option value="Cord only" ${item.type === 'Cord only' ? 'selected' : ''}>Cord only</option>
+            <option value="Head only" ${item.type === 'Head only' ? 'selected' : ''}>Head only</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" data-field="cost" placeholder="Cost price" min="0" step="0.01" value="${item.cost || ''}" style="margin-bottom:6px;">
+          <input type="number" data-field="price" placeholder="Sell price" min="0" step="0.01" value="${item.price}">
+        </td>
+        <td>
+          <input type="number" data-field="lowAt" placeholder="Low at" min="0" value="${item.lowAt}">
+        </td>
+        <td>
+          <button class="icon-btn" data-action="save" data-id="${item.id}" style="color:var(--teal-deep);">Save</button><br>
+          <button class="icon-btn" data-action="cancel" data-id="${item.id}">Cancel</button>
+        </td>
+      `;
+    }else{
+      tr.innerHTML = `
+        <td>
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          <div class="item-type">${escapeHtml(item.type || '—')}</div>
+        </td>
+        <td>
+          <div class="item-name">${currency(item.price)}</div>
+          <div class="item-type">${item.cost ? 'cost ' + currency(item.cost) + ' · +' + currency(item.price - item.cost) : 'no cost set'}</div>
+        </td>
+        <td>
+          <div class="qty-cell">
+            <button class="qty-btn" data-action="dec" data-id="${item.id}">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" data-action="inc" data-id="${item.id}">+</button>
+          </div>
+        </td>
+        <td><span class="badge ${isLow ? 'low':'ok'}">${isLow ? 'Low stock' : 'In stock'}</span></td>
+        <td>
+          <button class="icon-btn" data-action="edit" data-id="${item.id}">Edit</button><br>
+          <button class="icon-btn" data-action="remove" data-id="${item.id}">Remove</button>
+        </td>
+      `;
+    }
     body.appendChild(tr);
   });
 }
@@ -764,14 +794,46 @@ document.getElementById('invBody').addEventListener('click', (e)=>{
 
   if(action === 'inc'){
     item.qty = Number(item.qty) + 1;
+    pushState();
+    render();
   } else if(action === 'dec'){
     item.qty = Math.max(0, Number(item.qty) - 1);
+    pushState();
+    render();
   } else if(action === 'remove'){
     if(!confirm(`Remove "${item.name}" from inventory?`)) return;
     state.inventory = state.inventory.filter(i=>i.id !== id);
+    pushState();
+    render();
+  } else if(action === 'edit'){
+    editingId = id;
+    renderInventory();
+  } else if(action === 'cancel'){
+    editingId = null;
+    renderInventory();
+  } else if(action === 'save'){
+    const row = btn.closest('tr');
+    const name = row.querySelector('[data-field="name"]').value.trim();
+    const type = row.querySelector('[data-field="type"]').value;
+    const cost = row.querySelector('[data-field="cost"]').value;
+    const price = row.querySelector('[data-field="price"]').value;
+    const lowAt = row.querySelector('[data-field="lowAt"]').value;
+
+    if(!name || price === ''){
+      alert('Name and sell price are required.');
+      return;
+    }
+
+    item.name = name;
+    item.type = type;
+    item.cost = cost === '' ? 0 : Number(cost);
+    item.price = Number(price);
+    item.lowAt = lowAt === '' ? 0 : Number(lowAt);
+
+    editingId = null;
+    pushState();
+    render();
   }
-  pushState();
-  render();
 });
 
 document.getElementById('saleForm').addEventListener('submit', (e)=>{
