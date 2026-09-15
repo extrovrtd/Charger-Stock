@@ -92,7 +92,7 @@
   }
   .stats{
     display:grid;
-    grid-template-columns:repeat(4,minmax(120px,1fr));
+    grid-template-columns:repeat(5,minmax(110px,1fr));
     gap:10px;
     margin-bottom:28px;
   }
@@ -207,7 +207,7 @@
   }
   .add-form-row{
     display:grid;
-    grid-template-columns:2fr 1.2fr 1fr 1fr 1fr;
+    grid-template-columns:2fr 1.2fr 1fr 1fr 1fr 1fr;
     gap:8px;
   }
   .setup-grid{
@@ -382,6 +382,10 @@ service cloud.firestore {
       <div class="stat-label">Revenue (all time)</div>
       <div class="stat-value" id="statRevenue">₵0</div>
     </div>
+    <div class="stat">
+      <div class="stat-label">Profit (all time)</div>
+      <div class="stat-value" id="statProfit">₵0</div>
+    </div>
   </div>
 
   <div class="layout">
@@ -392,7 +396,7 @@ service cloud.firestore {
         <thead>
           <tr>
             <th>Item</th>
-            <th>Price</th>
+            <th>Price / margin</th>
             <th>Stock</th>
             <th>Status</th>
             <th></th>
@@ -411,6 +415,7 @@ service cloud.firestore {
             <option value="Head only">Head only</option>
           </select>
           <input type="number" id="newQty" placeholder="Qty" min="0" required>
+          <input type="number" id="newCost" placeholder="Cost price" min="0" step="0.01">
           <input type="number" id="newPrice" placeholder="Sell price" min="0" step="0.01" required>
           <input type="number" id="newLow" placeholder="Low at" min="0" value="3">
         </div>
@@ -476,11 +481,13 @@ function renderStats(){
   const totalValue = state.inventory.reduce((s,i)=>s+Number(i.qty)*Number(i.price),0);
   const lowCount = state.inventory.filter(i=>Number(i.qty) <= Number(i.lowAt)).length;
   const revenue = state.sales.reduce((s,sale)=>s+Number(sale.total),0);
+  const profit = state.sales.reduce((s,sale)=>s+Number(sale.profit || 0),0);
 
   document.getElementById('statUnits').textContent = totalUnits;
   document.getElementById('statValue').textContent = currency(totalValue);
   document.getElementById('statLow').textContent = lowCount;
   document.getElementById('statRevenue').textContent = currency(revenue);
+  document.getElementById('statProfit').textContent = currency(profit);
 }
 
 function renderInventory(){
@@ -502,7 +509,10 @@ function renderInventory(){
         <div class="item-name">${escapeHtml(item.name)}</div>
         <div class="item-type">${escapeHtml(item.type || '—')}</div>
       </td>
-      <td>${currency(item.price)}</td>
+      <td>
+        <div class="item-name">${currency(item.price)}</div>
+        <div class="item-type">${item.cost ? 'cost ' + currency(item.cost) + ' · +' + currency(item.price - item.cost) : 'no cost set'}</div>
+      </td>
       <td>
         <div class="qty-cell">
           <button class="qty-btn" data-action="dec" data-id="${item.id}">−</button>
@@ -558,7 +568,10 @@ function renderSaleLog(){
         <div>${escapeHtml(sale.itemName)} × ${sale.qty}</div>
         <div class="sale-meta">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
       </div>
-      <div>${currency(sale.total)}</div>
+      <div style="text-align:right;">
+        <div>${currency(sale.total)}</div>
+        <div class="sale-meta">+${currency(sale.profit || 0)} profit</div>
+      </div>
     `;
     log.appendChild(row);
   });
@@ -720,6 +733,7 @@ document.getElementById('addForm').addEventListener('submit', (e)=>{
   const name = document.getElementById('newName').value.trim();
   const type = document.getElementById('newType').value.trim();
   const qty = document.getElementById('newQty').value;
+  const cost = document.getElementById('newCost').value;
   const price = document.getElementById('newPrice').value;
   const lowAt = document.getElementById('newLow').value || 3;
 
@@ -729,6 +743,7 @@ document.getElementById('addForm').addEventListener('submit', (e)=>{
     id: uid(),
     name, type,
     qty: Number(qty),
+    cost: cost === '' ? 0 : Number(cost),
     price: Number(price),
     lowAt: Number(lowAt)
   });
@@ -772,12 +787,14 @@ document.getElementById('saleForm').addEventListener('submit', (e)=>{
   }
 
   item.qty -= qty;
+  const costAtSale = Number(item.cost || 0);
   state.sales.push({
     id: uid(),
     itemId,
     itemName: item.name,
     qty,
     total: qty * item.price,
+    profit: qty * (item.price - costAtSale),
     date: new Date().toISOString()
   });
 
